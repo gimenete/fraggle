@@ -1,0 +1,52 @@
+global
+	maxconn 131082
+	#user haproxy
+	#group haproxy
+	daemon
+	stats socket /tmp/haproxy.sock
+	#log 127.0.0.1 local0
+	#debug
+	#quie
+
+defaults
+	mode	http
+	timeout	server	50000ms
+#	option	log-separate-errors
+#	option	dontlog-normal
+
+frontend all 0.0.0.0:80
+	log 		127.0.0.1 local0 err
+	timeout client	86400000
+	# default_backend sitio_web
+
+<% for (var domain in data) { %>
+<% for (var subdomain in data[domain].running) { %>
+	# <%= subdomain %>
+	acl acl_<%= subdomain %> hdr(host) -i <%= subdomain %>
+	<% if (data[domain].running[subdomain].prod) { %>
+	acl acl_<%= subdomain %> hdr(host) -i <%= domain %>
+	<% } %>
+	use_backend backend_<%= subdomain %> if acl_<%= subdomain %>
+<% } %>
+
+<% } %>
+
+	acl logio	hdr(host)	logiotest.intera5.net
+	use_backend	sitio_logio	if logio
+
+<% for (var domain in data) { %>
+<% for (var subdomain in data[domain].running) { %>
+backend backend_<%= subdomain %>
+	timeout server 	86400000
+	timeout	connect	4000
+	server web_<%= subdomain %> localhost:<%= data[domain].running[subdomain].port %>
+
+<% } %>
+
+<% } %>
+
+backend	sitio_logio
+	timeout server  86400000
+	timeout connect 4000
+	#reqrep ^([^\ ]*)\ /logio/(.*)     \1\ /\2
+	server logio1	localhost:8998

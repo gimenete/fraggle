@@ -1,0 +1,14 @@
+{
+  "name": "fraggle",
+  "description": "A command line utility to deploy different versions of nodejs applications",
+  "author": "Alberto Gimeno Brieba <gimenete@gmail.com>",
+  "dependencies": {
+    "ejs": "0.4.x",
+    "colors": "0.5.x"
+  },
+  "version": "0.1.0",
+  "engine": "node >= 0.4.5",
+  "bin" : {
+    "fraggle" : "bin/run.js"
+  }
+}
