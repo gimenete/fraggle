@@ -351,10 +351,10 @@ if (!action) {
 							fs.readFile('/var/run/haproxy.pid', 'ascii', function(err, content) {
 								var args = null
 								if (err) {
-									var args = ['/usr/local/sbin/haproxy', '-f', cfg, '-p', '/var/run/haproxy.pid', '-sf']
+									var args = ['/usr/local/sbin/haproxy', '-f', cfg, '-p', '/var/run/haproxy.pid', '-st']
 								} else {
 									content = content.replace(/^\s*|\s*$/g,"")
-									var args = ['/usr/local/sbin/haproxy', '-f', cfg, '-p', '/var/run/haproxy.pid', '-sf', content]
+									var args = ['/usr/local/sbin/haproxy', '-f', cfg, '-p', '/var/run/haproxy.pid', '-st', content]
 								}
 								
 								var command = 'sudo'
