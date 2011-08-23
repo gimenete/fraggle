@@ -353,6 +353,7 @@ if (!action) {
 								if (err) {
 									var args = ['/usr/local/sbin/haproxy', '-f', cfg, '-p', '/var/run/haproxy.pid', '-sf']
 								} else {
+									content = content.replace(/^\s*|\s*$/g,"")
 									var args = ['/usr/local/sbin/haproxy', '-f', cfg, '-p', '/var/run/haproxy.pid', '-sf', content]
 								}
 								
